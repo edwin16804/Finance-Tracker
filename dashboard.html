@@ -216,29 +216,49 @@
         display: flex;
         flex-direction: row;
     }
+
     .close-btn {
-        display:inline;
+        display: inline;
         font-family: monospace;
         color: bisque;
-        font-size:smaller;
+        font-size: smaller;
         background-color: #373636;
         border: none;
         outline: none;
         border-radius: 10px;
         width: 20%;
     }
-    #fixed_date{
+    .logout{
+        position:absolute;
+        top:55px;
+        right:420px;
+        font-family: monospace;
+        color: bisque;
+        font-size: 20px;
+        background-color: #373636;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        width: 100px;
+    }
+
+    #fixed_date {
         background-color: #2a292900;
-        border:none;
-        height:10%;
-        color:rgb(191, 163, 129);;
+        border: none;
+        height: 10%;
+        color: rgb(191, 163, 129);
+        ;
     }
 </style>
 
 <body>
     <div class="flex_container">
         <div class="header">
-            <div class="card_h1">Hello {{fname}}</div>
+            <div class="card_h1">Hello {{fname}}
+            <a style="text-decoration:none" href="/start/login">
+                <button class="logout">Logout</button>
+            </a>
+            </div>
             <div class="card_h2">
                 <p id="day"></p>
                 <p id="date"></p>
@@ -256,19 +276,29 @@
             <div class="card1">
                 <table style="color:bisque;width:100%;">
                     <tr>
-                        <td style="width:100%;text-align: left;"><p style="font-size:45px;">Budget:</p></td>
+                        <td style="width:100%;text-align: left;">
+                            <p style="font-size:45px;">Budget:</p>
+                        </td>
                     </tr>
                     <tr>
-                        <td style="width:50%;text-align: left;"><p style="font-size:50px;">&#8377; {{budget}}</p></td>
-                        <td style="width:50%;text-align: right;color:rgb(179, 11, 11);"><p style="font-size:40px;">-{{fixed_expense}}</p></td>
+                        <td style="width:50%;text-align: left;">
+                            <p style="font-size:50px;">&#8377; {{budget}}</p>
+                        </td>
+                        <td style="width:50%;text-align: right;color:rgb(179, 11, 11);">
+                            <p style="font-size:40px;">{{total_expense}}</p>
+                        </td>
                     </tr>
                     <tr>
-                        <td style="width:100%;text-align: left;"><p style="font-size:45px;">Savings:</p></td>
+                        <td style="width:100%;text-align: left;">
+                            <p style="font-size:45px;">Savings:</p>
+                        </td>
                     </tr>
                     <tr>
-                        <td style="width:100%;text-align: left;"><p style="font-size:50px;">&#8377; {{savings}}</p></td>
+                        <td style="width:100%;text-align: left;">
+                            <p style="font-size:50px;">&#8377; {{savings}}</p>
+                        </td>
                     </tr>
-                </table>    
+                </table>
             </div>
 
             <div id="card2">
@@ -279,27 +309,27 @@
                         <br><br>
                         <div id="fixed_data" style="display:block;">
                             {% for i in result_fixed %}
-                                    <div style="font-size:smaller;">
-                                        <table style="color:beige;width:100%;font-size:20px;text-align: left;">
-                                            <tr>
-                                                <td style="width:20%"> &#8377;{{i[1]}}</td>
-                                                <td style="width:40%">{{i[3]}}</td>
-                                                <td style="width:40%">{{i[4]}}</td>
-                                            </tr>
-                                        </table>      
-                                    </div>
+                            <div style="font-size:smaller;">
+                                <table style="color:beige;width:100%;font-size:20px;text-align: left;">
+                                    <tr>
+                                        <td style="width:20%"> &#8377;{{i[1]}}</td>
+                                        <td style="width:40%">{{i[3]}}</td>
+                                        <td style="width:40%">{{i[4]}}</td>
+                                    </tr>
+                                </table>
+                            </div>
                             {% endfor %}
                         </div>
 
                         <div class="entry1" id="myForm1">
-                            <form class="form-container" id="form1" method="POST">
+                            <form class="form-container" id="form1" method="POST" action="/fixed_expenses">
                                 <div style="display:flex;flex-direction: row;">
                                     <p style="margin-right:10px;">Enter amount: </p>
-                                    <input type="text" class="details" id="fixed_amt" required>
+                                    <input type="text" class="details" id="fixed_amt" name="fixed_amount" required>
                                 </div>
                                 <div style="display:flex;flex-direction: row;gap:10px;">
                                     <p>Category: </p>
-                                    <select class="category" id="fixed_cat" required>
+                                    <select class="category" id="fixed_cat" name="category" required>
                                         <option value="Misc">Miscellaneous</option>
                                         <option value="Food">Food</option>
                                         <option value="Clothes">Clothes</option>
@@ -308,59 +338,25 @@
                                 </div>
                                 <div style="display:flex;flex-direction: row;gap:10px;">
                                     <p>Description: </p>
-                                    <input type="text" class="details" id="desc" style="width:30%">
+                                    <input type="text" class="details" id="desc" name="desc" style="width:30%">
                                 </div>
                                 <div style="display:flex;flex-direction: row;gap:10px;">
                                     <p>Type: </p>
-                                    <select class="category" id="fixed_type">
+                                    <select class="category" id="fixed_type" name="m/a">
                                         <option value="monthly">Monthly</option>
                                         <option value="annual">Annually</option>
                                     </select>
                                 </div>
                                 <div style="display:flex;flex-direction: row;gap:10px;">
                                     <p>Start-date: </p>
-                                    <input type="date" id="fixed_date" min="2024-03-18" max="2024-12-31" />
+                                    <input type="date" id="fixed_date" name="start_date" min="2024-03-18"
+                                        max="2024-12-31" />
                                 </div>
-                                    <input type="submit" value="Save" class="submit-btn" style="margin-right:10px;">
+                                <input type="submit" value="Save" class="submit-btn" style="margin-right:10px;">
                             </form>
                             <button class="close-btn" onclick="closeform1()">Close</button>
-                            
-                            <script>
-                                const form = document.getElementById('form1');
-                                form.addEventListener('submit', (event) => {
-                                    event.preventDefault();
-                                    const e1 = document.getElementById("fixed_exp");
-                                    const amount = document.getElementById('fixed_amt').value;
-                                    const category = document.getElementById('fixed_cat').value;
-                                    const description = document.getElementById('desc').value;
-                                    const type = document.getElementById('fixed_type').value;
-                                    const start_date = document.getElementById('fixed_date').value;
-                                    
-                                    const formData1 = {
-                                        amount: amount,
-                                        category: category,
-                                        desc: description,
-                                        type: type,
-                                        start_date:start_date
-                                    };
 
-                                    console.log(formData1);
-                                    fetch('/fixed_expenses', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify(formData1)
-                                    })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            closeform1()
-                                            console.log(data);
-                                        })
-                                        .catch(error => {
-                                            console.error('Error:', error);
-                                        });
-                                });
+                            <script>
 
                                 function openform1() {
                                     document.getElementById("fixed_data").style.display = "none";
@@ -379,16 +375,29 @@
                     <div class="card22">
                         <p style="margin:0;display:inline;float:left">Daily Expenses</p>
                         <p class="add-button" onclick="openform2()">+Add</p>
-                        <br>
+                        <br><br>
+                        <div id="daily_data" style="display:block;">
+                            {% for i in result_daily %}
+                            <div style="font-size:smaller;">
+                                <table style="color:beige;width:100%;font-size:20px;text-align: left;">
+                                    <tr>
+                                        <td style="width:20%"> &#8377;{{i[1]}}</td>
+                                        <td style="width:40%">{{i[2]}}</td>
+                                        <td style="width:40%">{{i[3]}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            {% endfor %}
+                        </div>
                         <div class="entry2" id="myForm2">
-                            <form class="form-container" id="form2" method="POST">
+                            <form class="form-container" id="form2" method="POST" action="/daily_expenses">
                                 <div style="display:flex;flex-direction: row;">
                                     <p style="margin-right:10px;">Enter amount: </p>
-                                    <input type="text" class="details" id="daily_amt">
+                                    <input type="text" class="details" id="daily_amt" name="daily_amount">
                                 </div>
                                 <div style="display:flex;flex-direction: row;">
                                     <p style="margin-right:10px;">Category: </p>
-                                    <select class="category" id="daily_cat">
+                                    <select class="category" id="daily_cat" name="daily_category">
                                         <option value="Misc">Miscellaneous</option>
                                         <option value="Food">Food</option>
                                         <option value="Clothes">Clothes</option>
@@ -397,61 +406,38 @@
                                 </div>
                                 <div style="display:flex;flex-direction: row;gap:10px;">
                                     <p>Description: </p>
-                                    <input type="text" class="details" id="daily_desc" style="width:30%">
+                                    <input type="text" class="details" id="daily_desc" name="daily_desc"
+                                        style="width:30%">
                                 </div>
-                                <div style="display:flex;flex-direction: row;">
-                                    <input type="submit" value="Save" class="submit-btn" style="margin-right:10px;">
-                                    <button class="submit-btn" onclick="closeform2()">Close</button>
-                                </div>
+
+                                <input type="submit" value="Save" class="submit-btn" style="margin-right:10px;">
                             </form>
+                            <button class="close-btn" onclick="closeform2()">Close</button>
                             <div class="expenses" id="daily_exp"> </div>
                             <script>
-                                const form2 = document.getElementById('form2');
-                                form2.addEventListener('submit', (event) => {
-                                    event.preventDefault();
-                                    const e1 = document.getElementById("daily_exp");
-                                    const amount2 = document.getElementById('daily_amt').value;
-                                    const category2 = document.getElementById('daily_cat').value;
-                                    const description2 = document.getElementById('daily_desc').value;
 
-                                    const formData2 = {
-                                        amount2: amount2,
-                                        category2: category2,
-                                        desc2: description2
-                                    };
-
-                                    console.log(formData2);
-                                    fetch('/daily_expenses', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify(formData2)
-                                    })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            closeform1()
-                                            e1.innerHTML += JSON.stringify(formData2);
-                                            console.log(data);
-                                        })
-                                        .catch(error => {
-                                            console.error('Error:', error);
-                                        });
-                                });
                                 function openform2() {
+                                    document.getElementById("daily_data").style.display = "none";
                                     document.getElementById("myForm2").style.display = "block";
                                 }
+
                                 function closeform2() {
+                                    document.getElementById("daily_data").style.display = "block";
                                     document.getElementById("myForm2").style.display = "none";
                                 }
-
                             </script>
                         </div>
                     </div>
                 </div>
                 <div class="col2">
-                    <div class="card23">Income</div>
-                    <div class="card24">Loan</div>
+                    <div class="card23">
+                        <p style="margin:0;display:inline;float:left">Income</p>
+                        <p class="add-button" onclick="openform1()">+Add</p>
+                    </div>
+                    <div class="card24">
+                        <p style="margin:0;display:inline;float:left">Loan</p>
+                        <p class="add-button" onclick="openform1()">+Add</p>
+                    </div>
                 </div>
             </div>
         </div>

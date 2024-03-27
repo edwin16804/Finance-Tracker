@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session,url_for
 #from sqlalchemy import create_engine
 #engine = create_engine("mysql+pymysql://root:Edchaz168@localhost/trial?charset=utf8mb4")
 import mysql.connector as ms
@@ -15,6 +15,7 @@ if conn.is_connected():
 mc=conn.cursor()
 
 app = Flask(__name__)
+
 
 
 @app.route('/')
@@ -79,50 +80,133 @@ def dashboard_page():
       mc.execute("select * from account_info where uname=%s",(uname,))
       result=mc.fetchall()
       conn.commit()
+      for result in result:
+          fname=result[1]
+          lname=result[2]
+          email=result[3]
+          pno=result[4]
+          budget=result[5]
+          savings=result[6]
+          
       mc.execute("select * from fixed_expenses where uname=%s",(uname,))
       result_fixed=mc.fetchall()
       conn.commit()
-      mc.execute("select sum(amount) from fixed_expenses where uname=%s",(uname,))
-      l=mc.fetchall()
-      print(l)
-      fixed_expense=l[0][0]
+      mc.execute("select * from daily_expenses where uname=%s",(uname,))
+      result_daily=mc.fetchall()
       conn.commit()
-      
-      print(result_fixed)
-      print(result)
-      for result in result:
-        fname=result[1]
-        lname=result[2]
-        email=result[3]
-        pno=result[4]
-        budget=result[5]
-        savings=result[6]
-        budget=budget-fixed_expense
-      return render_template("dashboard.html",fixed_expense=fixed_expense,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+      if result_fixed!=[] and result_daily==[]:
+        mc.execute("select sum(amount) from fixed_expenses where uname=%s",(uname,))
+        l=mc.fetchall()
+        print(l)
+        total_expense=l[0][0]
+        conn.commit()
+        budget=budget-total_expense
+        return render_template("dashboard.html",total_expense=-total_expense,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+      elif result_fixed==[] and result_daily!=[]:
+        mc.execute("select sum(amount) from daily_expenses where uname=%s",(uname,))
+        l=mc.fetchall()
+        print(l)
+        total_expense=l[0][0]
+        conn.commit()
+        budget=budget-total_expense
+        return render_template("dashboard.html",total_expense=-total_expense,result_daily=result_daily,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+      elif result_fixed!=[] and result_daily!=[]:
+        mc.execute("select sum(amount) from fixed_expenses where uname=%s",(uname,))
+        l=mc.fetchall()
+        print(l)
+        fixed_expense=l[0][0]
+        conn.commit()
+        mc.execute("select sum(amount) from daily_expenses where uname=%s",(uname,))
+        l1=mc.fetchall()
+        print(l)
+        daily_expense=l1[0][0]
+        conn.commit()
+        total_expense=fixed_expense + daily_expense
+        budget=budget-total_expense
+        return render_template("dashboard.html",total_expense=-total_expense,result_daily=result_daily,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+      elif result_fixed==[] and result_daily==[]:
+        return render_template("dashboard.html",uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
     else:
       err="Invalid username or password!"
       return render_template("login.html",err=err)
-    
+
+@app.route('/user_dashboard')
+def user_dashboard_page():
+      mc.execute("select * from account_info where uname=%s",(uname,))
+      result=mc.fetchall()
+      conn.commit()
+      for result in result:
+          fname=result[1]
+          lname=result[2]
+          email=result[3]
+          pno=result[4]
+          budget=result[5]
+          savings=result[6]
+          
+      mc.execute("select * from fixed_expenses where uname=%s",(uname,))
+      result_fixed=mc.fetchall()
+      conn.commit()
+      mc.execute("select * from daily_expenses where uname=%s",(uname,))
+      result_daily=mc.fetchall()
+      conn.commit()
+      if result_fixed!=[] and result_daily==[]:
+        mc.execute("select sum(amount) from fixed_expenses where uname=%s",(uname,))
+        l=mc.fetchall()
+        print(l)
+        total_expense=l[0][0]
+        conn.commit()
+        budget=budget-total_expense
+        return render_template("dashboard.html",total_expense=-total_expense,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+      elif result_fixed==[] and result_daily!=[]:
+        mc.execute("select sum(amount) from daily_expenses where uname=%s",(uname,))
+        l=mc.fetchall()
+        print(l)
+        total_expense=l[0][0]
+        conn.commit()
+        budget=budget-total_expense
+        return render_template("dashboard.html",total_expense=-total_expense,result_daily=result_daily,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+      elif result_fixed!=[] and result_daily!=[]:
+        mc.execute("select sum(amount) from fixed_expenses where uname=%s",(uname,))
+        l=mc.fetchall()
+        print(l)
+        fixed_expense=l[0][0]
+        conn.commit()
+        mc.execute("select sum(amount) from daily_expenses where uname=%s",(uname,))
+        l1=mc.fetchall()
+        print(l)
+        daily_expense=l1[0][0]
+        conn.commit()
+        total_expense=fixed_expense + daily_expense
+        budget=budget-total_expense
+        return render_template("dashboard.html",total_expense=-total_expense,result_daily=result_daily,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+      elif result_fixed==[] and result_daily==[]:
+        return render_template("dashboard.html",uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+
+
 
 @app.route('/fixed_expenses',methods=['POST'])
 def fixed_expenses():
   if request.method == 'POST':
-    fd=request.json
-    print(fd)
-    amount=int(fd['amount'])
-    category=fd['category']
-    desc=fd['desc']
-    type=fd['type']
-    start_date=fd['start_date']
-    mc.execute("insert into fixed_expenses values(%s,%s,%s,%s,%s,%s)",(uname,amount,category,desc,type,start_date))
+    amt=request.form['fixed_amount']
+    amt=int(amt)
+    cat=request.form['category']
+    des=request.form['desc']
+    ma=request.form['m/a']
+    sdate=request.form['start_date']
+    mc.execute("insert into fixed_expenses values(%s,%s,%s,%s,%s,%s)",(uname,amt,cat,des,ma,sdate))
     conn.commit()
-    return {'hi':2}
+    return redirect(url_for('user_dashboard_page'))
 
 @app.route('/daily_expenses',methods=['POST'])
 def daily_expenses():
-  formdata=request.json
-  print(formdata)
-  return {'hi':2}
+  if request.method == 'POST':
+    amt=request.form['daily_amount']
+    amt=int(amt)
+    cat=request.form['daily_category']
+    des=request.form['daily_desc']
+    mc.execute("insert into daily_expenses values(%s,%s,%s,%s,curdate())",(uname,amt,cat,des))
+    conn.commit()
+    return redirect(url_for('user_dashboard_page'))
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', debug=True)
