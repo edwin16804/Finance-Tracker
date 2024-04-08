@@ -128,8 +128,8 @@
 
     }
 
-    .card23,
-    .card24 {
+    .loan_block,
+    .income_block {
         background-color: #2a292992;
         width: 50%;
         height: 100%;
@@ -164,6 +164,18 @@
         display: none;
         margin-top: 10px;
 
+    }
+
+    #myForm3 {
+        height: 100%;
+        display: none;
+        margin-top: 10px;
+    }
+
+    #myForm4 {
+        height: 100%;
+        display: none;
+        margin-top: 10px;
     }
 
     .form-container {
@@ -228,10 +240,11 @@
         border-radius: 10px;
         width: 20%;
     }
-    .logout{
-        position:absolute;
-        top:55px;
-        right:420px;
+
+    .logout {
+        position: absolute;
+        top: 55px;
+        right: 420px;
         font-family: monospace;
         color: bisque;
         font-size: 20px;
@@ -255,9 +268,9 @@
     <div class="flex_container">
         <div class="header">
             <div class="card_h1">Hello {{fname}}
-            <a style="text-decoration:none" href="/start/login">
-                <button class="logout">Logout</button>
-            </a>
+                <a style="text-decoration:none" href="/start/login">
+                    <button class="logout">Logout</button>
+                </a>
             </div>
             <div class="card_h2">
                 <p id="day"></p>
@@ -357,7 +370,6 @@
                             <button class="close-btn" onclick="closeform1()">Close</button>
 
                             <script>
-
                                 function openform1() {
                                     document.getElementById("fixed_data").style.display = "none";
                                     document.getElementById("myForm1").style.display = "block";
@@ -368,9 +380,7 @@
                                     document.getElementById("myForm1").style.display = "none";
                                 }
                             </script>
-
                         </div>
-                        <div class="expenses" id="fixed_exp"> </div>
                     </div>
                     <div class="card22">
                         <p style="margin:0;display:inline;float:left">Daily Expenses</p>
@@ -430,18 +440,117 @@
                     </div>
                 </div>
                 <div class="col2">
-                    <div class="card23">
+                    <div class="income_block">
                         <p style="margin:0;display:inline;float:left">Income</p>
-                        <p class="add-button" onclick="openform1()">+Add</p>
+                        <p class="add-button" onclick="openform3()">+Add</p>
+                        <br><br>
+                        <div id="income_data" style="display:block;">
+                            <div style="font-size:smaller;">
+                                <table style="color:beige;width:100%;font-size:20px;text-align: left;">
+                                    <tr>
+                                        <td style="width:20%"> &#8377;</td>
+                                        <td style="width:40%"></td>
+                                        <td style="width:40%"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="entry1" id="myForm3">
+                            <form class="form-container" id="form3" method="POST" action="/income">
+                                <div style="display:flex;flex-direction: row;">
+                                    <p style="margin-right:10px;">Enter amount: </p>
+                                    <input type="text" class="details" id="inc_amt" name="inc_amount" required>
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Description: </p>
+                                    <input type="text" class="details" id="inc_desc" name="inc_desc" style="width:30%">
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Type: </p>
+                                    <select class="category" id="inc_type" name="inc_m/a">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="annual">Annually</option>
+                                    </select>
+                                </div>
+                                <input type="submit" value="Save" class="submit-btn" style="margin-right:10px;">
+                            </form>
+                            <button class="close-btn" onclick="closeform3()">Close</button>
+                            <script>
+                                function openform3() {
+                                    document.getElementById("income_data").style.display = "none";
+                                    document.getElementById("myForm3").style.display = "block";
+                                }
+
+                                function closeform3() {
+                                    document.getElementById("income_data").style.display = "block";
+                                    document.getElementById("myForm3").style.display = "none";
+                                }
+                            </script>
+                        </div>
                     </div>
-                    <div class="card24">
+                    <div class="loan_block">
                         <p style="margin:0;display:inline;float:left">Loan</p>
-                        <p class="add-button" onclick="openform1()">+Add</p>
+                        <p class="add-button" onclick="openform4()">+Add</p>
+                        <br><br>
+                        <div id="loan_data" style="display:block;">
+                            <div style="font-size:smaller;">
+                                <table style="color:beige;width:100%;font-size:20px;text-align: left;">
+                                    <tr>
+                                        <td style="width:20%"> &#8377;</td>
+                                        <td style="width:40%"></td>
+                                        <td style="width:40%"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="entry1" id="myForm4">
+                            <form class="form-container" id="form4" method="POST" action="/loan">
+                                <div style="display:flex;flex-direction: row;">
+                                    <p style="margin-right:10px;">Enter amount: </p>
+                                    <input type="text" class="details" id="fixed_amt" name="fixed_amount" required>
+                                </div>
+                                <div style="display:flex;flex-direction: row;">
+                                    <p style="margin-right:10px;">Interest rate: </p>
+                                    <input type="text" class="details" id="loan_rate" name="loan_rate" required>
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Type: </p>
+                                    <select class="category" id="loan_type" name="category" required>
+                                        <option value="Home loan">Home loan</option>
+                                        <option value="Car loan">Car loan</option>
+                                        <option value="Education loan">Education loan</option>
+                                        <option value="Personal loan">Personal loan</option>
+                                    </select>
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Term: </p>
+                                    <div style="display:flex;flex-direction: row;gap:px;"></div>
+                                    <input type="text" class="details" style="width:10%" id="loan_term" name="loan_term"
+                                        required>
+                                    <select class="category" style="width:30%" id="loan term" name="m/y">
+                                        <option value="monthly">months</option>
+                                        <option value="annual">years</option>
+                                    </select>
+                                </div>
+                                <input type="submit" value="Save" class="submit-btn" style="margin-right:10px;">
+                            </form>
+                            <button class="close-btn" onclick="closeform4()">Close</button>
+                            <script>
+                                function openform4() {
+                                    document.getElementById("loan_data").style.display = "none";
+                                    document.getElementById("myForm4").style.display = "block";
+                                }
+    
+                                function closeform4() {
+                                    document.getElementById("loan_data").style.display = "block";
+                                    document.getElementById("myForm4").style.display = "none";
+                                }
+                            </script>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
 </body>
 

@@ -207,6 +207,19 @@ def daily_expenses():
     mc.execute("insert into daily_expenses values(%s,%s,%s,%s,curdate())",(uname,amt,cat,des))
     conn.commit()
     return redirect(url_for('user_dashboard_page'))
+  
+
+@app.route('/income',methods=['POST'])
+def income():
+  if request.method=='POST':
+     return redirect(url_for('user_dashboard_page'))
+  
+@app.route('/loan',methods=['POST'])
+def loan():
+  if request.method=='POST':
+     return redirect(url_for('user_dashboard_page'))
+
+
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', debug=True)
