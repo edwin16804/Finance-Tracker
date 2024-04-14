@@ -17,7 +17,6 @@ mc=conn.cursor()
 app = Flask(__name__)
 
 
-
 @app.route('/')
 def main_page():
   return render_template("start_page.html")
@@ -57,7 +56,6 @@ def success_page():
     budget=request.form['budget']
     savings=request.form['savings']
     print(uname,fname,lname,email,phone,budget,savings)
-    phone=int(phone)
     budget=int(budget)
     savings=int(savings)
     mc.execute("insert into account_info values(%s,%s,%s,%s,%s,%s,%s)",(uname,fname,lname,email,phone,budget,savings))
@@ -77,6 +75,7 @@ def dashboard_page():
     result=mc.fetchall()
     conn.commit
     if result!=[]:
+      
       mc.execute("select * from account_info where uname=%s",(uname,))
       result=mc.fetchall()
       conn.commit()
@@ -87,29 +86,55 @@ def dashboard_page():
           pno=result[4]
           budget=result[5]
           savings=result[6]
-          
-      mc.execute("select * from fixed_expenses where uname=%s",(uname,))
+
+         
+      mc.execute("select * from fixed_expenses where uname=%s order by start_date desc",(uname,))
       result_fixed=mc.fetchall()
       conn.commit()
-      mc.execute("select * from daily_expenses where uname=%s",(uname,))
+      mc.execute("select * from daily_expenses where uname=%s  and date(date)=curdate()",(uname,))
+      result_today=mc.fetchall()
+      conn.commit()
+      mc.execute("select * from income where uname=%s",(uname,))
+      result_income=mc.fetchall()
+      conn.commit()
+      mc.execute("select * from loan where uname=%s",(uname,))
+      result_loan=mc.fetchall()
+      conn.commit()
+    
+      mc.execute("select * from daily_expenses where uname=%s and extract(month from date(date))=extract(month from curdate())",(uname,))
       result_daily=mc.fetchall()
       conn.commit()
+      # Calculate total income
+      mc.execute("SELECT SUM(income_amount) FROM income WHERE uname=%s", (uname,))
+      total_inc = mc.fetchall()
+      conn.commit()      
+      if total_inc!=[]:
+        total_income=total_inc[0][0]
+        savings += total_income
+      else:
+        total_income=0
+      
       if result_fixed!=[] and result_daily==[]:
         mc.execute("select sum(amount) from fixed_expenses where uname=%s",(uname,))
         l=mc.fetchall()
         print(l)
+        fixed_expense=l[0][0]
         total_expense=l[0][0]
         conn.commit()
+        mc.execute("select sum(amount) from fixed_expenses where uname=%s and extract(day from start_date)=extract(day from curdate());",(uname,))
+        due_today=mc.fetchall()
+        conn.commit()
         budget=budget-total_expense
-        return render_template("dashboard.html",total_expense=-total_expense,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+        return render_template("dashboard.html",total_expense=-total_expense,daily_expense=0,total_income=total_income,result_loan=result_loan,result_income=result_income,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
       elif result_fixed==[] and result_daily!=[]:
         mc.execute("select sum(amount) from daily_expenses where uname=%s",(uname,))
         l=mc.fetchall()
         print(l)
+        daily_expense=l[0][0]
         total_expense=l[0][0]
         conn.commit()
         budget=budget-total_expense
-        return render_template("dashboard.html",total_expense=-total_expense,result_daily=result_daily,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+        return render_template("dashboard.html",total_expense=-total_expense,fixed_expense=0,total_income=total_income,result_loan=result_loan,result_income=result_income,result_today=result_today,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
       elif result_fixed!=[] and result_daily!=[]:
         mc.execute("select sum(amount) from fixed_expenses where uname=%s",(uname,))
         l=mc.fetchall()
@@ -123,8 +148,8 @@ def dashboard_page():
         conn.commit()
         total_expense=fixed_expense + daily_expense
         budget=budget-total_expense
-        return render_template("dashboard.html",total_expense=-total_expense,result_daily=result_daily,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
-      elif result_fixed==[] and result_daily==[]:
+        return render_template("dashboard.html",fixed_expense=fixed_expense,daily_expense=daily_expense,total_expense=-total_expense,result_today=result_today,total_income=total_income,result_loan=result_loan,result_income=result_income,result_fixed=result_fixed,result_daily=result_daily,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+      elif result_fixed==[] and result_daily==[] and result_income==[] and result_loan==[]:
         return render_template("dashboard.html",uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
     else:
       err="Invalid username or password!"
@@ -142,29 +167,55 @@ def user_dashboard_page():
           pno=result[4]
           budget=result[5]
           savings=result[6]
-          
-      mc.execute("select * from fixed_expenses where uname=%s",(uname,))
+
+         
+      mc.execute("select * from fixed_expenses where uname=%s order by start_date desc",(uname,))
       result_fixed=mc.fetchall()
       conn.commit()
+      mc.execute("select * from daily_expenses where uname=%s  and date(date)=curdate()",(uname,))
+      result_today=mc.fetchall()
+      conn.commit()
+      mc.execute("select * from income where uname=%s",(uname,))
+      result_income=mc.fetchall()
+      conn.commit()
+      mc.execute("select * from loan where uname=%s",(uname,))
+      result_loan=mc.fetchall()
+      conn.commit()
+    
       mc.execute("select * from daily_expenses where uname=%s",(uname,))
       result_daily=mc.fetchall()
       conn.commit()
+      # Calculate total income
+      mc.execute("SELECT SUM(income_amount) FROM income WHERE uname=%s", (uname,))
+      total_inc = mc.fetchall()
+      conn.commit()      
+      if total_inc!=[]:
+        total_income=total_inc[0][0]
+        savings += total_income
+      else:
+        total_income=0
+      
       if result_fixed!=[] and result_daily==[]:
         mc.execute("select sum(amount) from fixed_expenses where uname=%s",(uname,))
         l=mc.fetchall()
         print(l)
+        fixed_expense=l[0][0]
         total_expense=l[0][0]
         conn.commit()
+        mc.execute("select sum(amount) from fixed_expenses where uname=%s and extract(day from start_date)=extract(day from curdate());",(uname,))
+        due_today=mc.fetchall()
+        conn.commit()
         budget=budget-total_expense
-        return render_template("dashboard.html",total_expense=-total_expense,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+        return render_template("dashboard.html",total_expense=-total_expense,daily_expense=0,total_income=total_income,result_loan=result_loan,result_income=result_income,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
       elif result_fixed==[] and result_daily!=[]:
         mc.execute("select sum(amount) from daily_expenses where uname=%s",(uname,))
         l=mc.fetchall()
         print(l)
+        daily_expense=l[0][0]
         total_expense=l[0][0]
         conn.commit()
         budget=budget-total_expense
-        return render_template("dashboard.html",total_expense=-total_expense,result_daily=result_daily,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+        return render_template("dashboard.html",total_expense=-total_expense,fixed_expense=0,total_income=total_income,result_loan=result_loan,result_income=result_income,result_today=result_today,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
       elif result_fixed!=[] and result_daily!=[]:
         mc.execute("select sum(amount) from fixed_expenses where uname=%s",(uname,))
         l=mc.fetchall()
@@ -178,9 +229,10 @@ def user_dashboard_page():
         conn.commit()
         total_expense=fixed_expense + daily_expense
         budget=budget-total_expense
-        return render_template("dashboard.html",total_expense=-total_expense,result_daily=result_daily,result_fixed=result_fixed,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
-      elif result_fixed==[] and result_daily==[]:
+        return render_template("dashboard.html",fixed_expense=fixed_expense,daily_expense=daily_expense,total_expense=-total_expense,result_today=result_today,total_income=total_income,result_loan=result_loan,result_income=result_income,result_fixed=result_fixed,result_daily=result_daily,uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+      elif result_fixed==[] and result_daily==[] and result_income==[] and result_loan==[]:
         return render_template("dashboard.html",uname=uname,fname=fname,lname=lname,email=email,pno=pno,budget=budget,savings=savings)
+
 
 
 
@@ -212,12 +264,26 @@ def daily_expenses():
 @app.route('/income',methods=['POST'])
 def income():
   if request.method=='POST':
-     return redirect(url_for('user_dashboard_page'))
+    amt=request.form['inc_amount']
+    amt=int(amt)
+    des=request.form['inc_desc']
+    type=request.form['inc_type']
+    mc.execute("insert into income values(%s,%s,%s,%s)",(uname,amt,des,type))
+    conn.commit()
+    return redirect(url_for('user_dashboard_page'))
   
 @app.route('/loan',methods=['POST'])
 def loan():
   if request.method=='POST':
-     return redirect(url_for('user_dashboard_page'))
+    amt=int(request.form['loan_amount'])
+    rate=int(request.form['loan_rate'])
+    type=request.form['loan_type']
+    term1=request.form['loan_term']
+    term2=request.form['loan_m/y']
+    term=term1+' '+term2
+    mc.execute("insert into loan values(%s,%s,%s,%s,%s)",(uname,amt,rate,type,term))
+    conn.commit()
+    return redirect(url_for('user_dashboard_page'))
 
 
 
