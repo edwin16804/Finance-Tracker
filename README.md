@@ -1,4 +1,4 @@
-#Personal Finance Tracker
+# Personal Finance Tracker
 
 Objective:
 Developed a Personal Finance Manager to help users effectively manage their finances by organizing and optimizing income, expenses, savings, and investments.
