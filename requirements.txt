@@ -1,2 +1,0 @@
-Flask==2.3.2  # Version can be updated based on your needs
-mysql-connector-python==8.0.33  # Connector for MySQL and Python
