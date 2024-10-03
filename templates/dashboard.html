@@ -1,0 +1,622 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Dashboard</title>
+</head>
+<style>
+    body {
+        background: #191919;
+
+    }
+
+    .flex_container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+
+    }
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        background-color: #191919;
+        width: 100%;
+        height: 30%;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 20px;
+    }
+
+    .card_h1 {
+        background-color: #2a292992;
+        width: 75%;
+        height: 100%;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 20px;
+        font-family: monospace;
+        color: bisque;
+        padding: 20px;
+        font-size: 35px;
+
+    }
+
+    .card_h2 {
+        background-color: #2a292992;
+        width: 25%;
+        height: 100%;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 20px;
+        font-family: monospace;
+        color: bisque;
+        padding: 20px;
+        font-size: 40px;
+
+    }
+
+    .main {
+        display: flex;
+        flex-direction: row;
+        background-color: #191919;
+        width: 100%;
+        height: 70%;
+        border: none;
+        border-radius: 20px;
+    }
+
+    .card1 {
+        background-color: #2a292992;
+        width: 40%;
+        height: 100%;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 20px;
+        padding: 20px;
+        font-family: monospace;
+        color: bisque;
+    }
+
+    #card2 {
+        display: flex;
+        flex-direction: column;
+        background-color: #191919;
+        width: 60%;
+        gap: 10px;
+        height: 100%;
+        border: none;
+        border-radius: 20px;
+
+    }
+
+    .col1,
+    .col2 {
+        display: flex;
+        flex-direction: row;
+        background-color: #191919;
+        width: 100%;
+        height: 50%;
+        gap: 10px;
+        border: none;
+        border-radius: 20px;
+
+    }
+
+    .card21,
+    .card22 {
+        background-color: #2a292992;
+        width: 50%;
+        height: 100%;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 20px;
+        font-family: monospace;
+        color: bisque;
+        padding: 20px;
+        font-size: 23px;
+        overflow: auto;
+
+    }
+
+    .loan_block,
+    .income_block {
+        background-color: #2a292992;
+        width: 50%;
+        height: 100%;
+        border: none;
+        border-radius: 20px;
+        font-family: monospace;
+        color: bisque;
+        padding: 20px;
+        font-size: 23px;
+        overflow: auto;
+
+    }
+
+    .add-button {
+        font-family: monospace;
+        cursor: pointer;
+        display: inline;
+        float: right;
+        margin: 0;
+        font-size: 23px;
+    }
+
+    #myForm1 {
+        height: 100%;
+        display: none;
+        margin-top: 10px;
+
+    }
+
+    #myForm2 {
+        height: 100%;
+        display: none;
+        margin-top: 10px;
+
+    }
+
+    #myForm3 {
+        height: 100%;
+        display: none;
+        margin-top: 10px;
+    }
+
+    #myForm4 {
+        height: 100%;
+        display: none;
+        margin-top: 10px;
+    }
+
+    .form-container {
+        display: flex;
+        font-size: smaller;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .details {
+        background-color: #2a292900;
+        outline: none;
+        border-bottom: 1px solid bisque;
+        border-right: none;
+        caret-color: #3f3f3f;
+        color: rgb(191, 163, 129);
+        margin-bottom: 10px;
+        width: 20%;
+        height: 10%;
+    }
+
+    .details:focus {
+        border-bottom: 1px solid bisque;
+    }
+
+    .category {
+        background: #2a292900;
+        border: none;
+        width: 50%;
+        height: 10%;
+        color: rgb(191, 163, 129);
+    }
+
+    .form-container .cancel {
+        background-color: red;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    .submit-btn {
+        font-family: monospace;
+        color: bisque;
+        background-color: #373636;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        width: 20%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .close-btn {
+        display: inline;
+        font-family: monospace;
+        color: bisque;
+        font-size: smaller;
+        background-color: #373636;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        width: 20%;
+    }
+
+    .logout {
+        position: absolute;
+        top: 50px;
+        right: 420px;
+        font-family: monospace;
+        color: bisque;
+        font-size: 20px;
+        background-color: #373636;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        width: 100px;
+    }
+
+    #fixed_date {
+        background-color: #2a292900;
+        border: none;
+        height: 10%;
+        color: rgb(191, 163, 129);
+        ;
+    }
+</style>
+
+<body>
+    <div class="flex_container">
+        <div class="header">
+            <div class="card_h1">Hello {{uname}}
+                <a style="text-decoration:none" href="/start/login">
+                    <button class="logout">Logout</button>
+                </a>
+                <br>
+                <p style="color:beige;font-size:22px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAsUlEQVR4nO2VQQrCMBBFs9SbWV1L81eepOcyo4g71x7AzEDqDdxbSbELxWrI6KLUDx8CE/4LwyQxZlRiQhOtCjltMGeydRfGyba1UFkknDInHJ2Dqg2cWcvb+KQ/wPi1XXiHc9+0qFvEj9MVhgcQKos7JIizs68DPikbEA7LKRMqTziywyW6XRMq2a8magA77N68P1s1wDtc+wCxpgakalQA+9v/QNoLhZATLi8u4PB1A9vt4X8UEot/AAAAAElFTkSuQmCC">
+                    {{fname}} {{lname}}</p>
+                <p style="color:beige;font-size:22px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABPklEQVR4nO2VvUrEQBCAV7ASS8VKEJ9CbHwBtTsyE3/wLbS31UcQH8HzEG/mFLcW0UJExLudYHGNdmqhgkY2t9FwF+WMm+4+GFJkmS+Zn0SpAX/BMGphjDPxahgXlC9swi5BLIxb/gQED90CQ7DrUYBnPQLGc28C+7S9Ani/0pVRL4KIw7W8N9B6btiL4PawMi4Eb9/1x2tzDBPKJ4ah6gQtK1S+iRpLM256nqN6MKXKQBgPXIOrpQjujsJpIXxKSkXheikSw7DsGv0h9WAl74ydrnZtfqS4hHAzlRjCjew9OwCG8MLuSXK1O0SwLQ1Y7FsQx2oolTjRfpOCSTfOlznfLRsvBcsFj52eJL1p/ZA8CVW88VD7LfG/BClNCmYNw152470KUm40jgnhqjDuCMOpMN53flBw8nVogOqDT3Z2XKhIXV++AAAAAElFTkSuQmCC">
+                    +91-{{pno}}</p>
+                <p style="color:beige;width:100%;font-size:22px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABKUlEQVR4nO2UMUoDURCGg3aCHkDQM4iCZ1CJkCZm/o1YWHgFy7RewTZlqqCgM/EEgmBnQDNvTTQHsEinPBklGHmJu24CWuzAzw47773vzb/LFAp5/JvotLCjjGcn8NOJnmKpbAcAFWpPfzg+pIy7ANBt0bIK6jPo4FyvyqsBoN08XLRnzChZm5msYZRGz/puEaPvGAeW98+KCyp0ooLXRDuE3lTo9P6iuvRpNXYdoxsAxrUYS7TmhK4ne023ytgcWuyYGsPaDwC7FQaOo2PfKM/7Wm3OSXTkhF7S1hMBI93cdCTasPoDV1ZUqGmy3N49Xu6t25pxe1MCEHic9hulBrgv9VRoXxlVy5PWZwH43ygH+AwWZRkPmPhDBAAbsTOC9GKmrQCQx5/FO9w6a9RmaLT9AAAAAElFTkSuQmCC">
+                    {{email}}</p>
+            </div>
+            <div class="card_h2">
+                <p id="day"></p>
+                <p id="date"></p>
+                <script>
+                    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    var d = new Date();
+                    var day = weekday[d.getDay()];
+                    var date = Date().substr(4, 12);
+                    document.getElementById("day").innerHTML = day;
+                    document.getElementById("date").innerHTML = date;
+                </script>
+            </div>
+        </div>
+        <div class="main">
+            <div class="card1">
+                <table style="color:bisque;width:100%;">
+                    <tr>
+                        <td style="width:100%;text-align: left;">
+                            <p style="font-size:45px;">Budget:</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:50%;text-align: left;">
+                            <p style="font-size:50px;">&#8377; {{budget}}</p>
+                        </td>
+                        <td style="width:50%;text-align: right;color:rgb(179, 11, 11);">
+                            <p style="font-size:40px;">{{total_expense}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:50%;text-align: left;">
+                            <p style="font-size:23px;">Total fixed expenditure:</p>
+                        </td>
+                        <td style="width:50%;text-align: right;color:rgb(179, 11, 11);">
+                            <p style="font-size:23px;">&#8377;{{fixed_expense}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:50%;text-align: left;">
+                            <p style="font-size:23px;">Total daily expenditure:</p>
+                        </td>
+                        <td style="width:50%;text-align: right;color:rgb(179, 11, 11);">
+                            <p style="font-size:23px;">&#8377;{{daily_expense}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p style="font-size:23px;"> </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100%;text-align: left;">
+                            <p style="font-size:45px;">Savings:</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100%;text-align: left;">
+                            <p style="font-size:50px;">&#8377; {{savings}}</p>
+                        </td>
+                        {% if total_income != 0 %}
+                                <td style="width:50%;text-align: right;color:rgb(11, 179, 25);">
+                                    <p style="font-size:40px;">+{{total_income}}</p>
+                                </td>               
+                        {% else %}
+                                <td></td>
+                        {% endif %}
+                        
+                    </tr>
+                </table>
+            </div>
+
+            <div id="card2">
+                <div class="col1">
+                    <div class="card21">
+                        <table style="color:bisque;width:100%;">
+                            <tr>
+                                <td style="width:50%;font-size:23px"> <p style="margin:0;display:inline;float:left">Fixed Expenses</p></td>
+                                <td style="width:50%;text-align: right;"><p class="add-button" onclick="openform1()">+Add</p></td>
+                            </tr>
+                        </table>
+                        <br>
+                        <div id="fixed_data" style="display:block;">
+                            {% for i in result_fixed %}
+                            <div style="font-size:smaller;">
+                                <table style="color:beige;width:100%;font-size:20px;text-align: left;">
+                                    <tr>
+                                        <td style="width:20%"> &#8377;{{i[1]}}</td>
+                                        <td style="width:40%">{{i[3]}}</td>
+                                        <td style="width:40%">{{i[4]}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="entry1" id="myForm1">
+                            <form class="form-container" id="form1" method="POST" action="/fixed_expenses">
+                                <div style="display:flex;flex-direction: row;">
+                                    <p style="margin-right:10px;">Enter amount: </p>
+                                    <input type="text" class="details" id="fixed_amt" name="fixed_amount" required>
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Category: </p>
+                                    <select class="category" id="fixed_cat" name="category" required>
+                                        <option value="Misc">Miscellaneous</option>
+                                        <option value="Food">Food</option>
+                                        <option value="Clothes">Clothes</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                    </select>
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Description: </p>
+                                    <input type="text" class="details" id="desc" name="desc" style="width:30%">
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Type: </p>
+                                    <select class="category" id="fixed_type" name="m/a">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="annual">Annually</option>
+                                    </select>
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Start-date: </p>
+                                    <input type="date" id="fixed_date" name="start_date" min="2024-03-18"
+                                        max="2024-12-31" />
+                                </div>
+                                <input type="submit" value="Save" class="submit-btn" style="margin-right:10px;">
+                            </form>
+                            <button class="close-btn" onclick="closeform1()">Close</button>
+
+                            <script>
+                                function openform1() {
+                                    document.getElementById("fixed_data").style.display = "none";
+                                    document.getElementById("myForm1").style.display = "block";
+                                }
+
+                                function closeform1() {
+                                    document.getElementById("fixed_data").style.display = "block";
+                                    document.getElementById("myForm1").style.display = "none";
+                                }
+                            </script>
+                        </div>
+                    </div>
+                    <div class="card22">
+                        <table style="color:bisque;width:100%;">
+                            <tr>
+                                <td style="width:50%;font-size:23px"> <p style="margin:0;display:inline;float:left">Daily Expenses</p></td>
+                                <td style="width:50%;text-align: right;"><p class="add-button" onclick="openform2()">+Add</p></td>
+                            </tr>
+                        </table><br>
+                        <div id="daily_data" style="display:block;">
+                            {% if result_today!=[] %}
+                                {% for i in result_today %}
+                                <div style="font-size:smaller;">
+                                    <table style="color:beige;width:100%;font-size:20px;text-align: left;">
+                                        <tr>
+                                            <td style="width:20%"> &#8377;{{i[1]}}</td>
+                                            <td style="width:40%">{{i[2]}}</td>
+                                            <td style="width:40%">{{i[3]}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div></div>
+                            {% endif %}
+                        </div>
+                        <div class="entry2" id="myForm2">
+                            <form class="form-container" id="form2" method="POST" action="/daily_expenses">
+                                <div style="display:flex;flex-direction: row;">
+                                    <p style="margin-right:10px;">Enter amount: </p>
+                                    <input type="text" class="details" id="daily_amt" name="daily_amount">
+                                </div>
+                                <div style="display:flex;flex-direction: row;">
+                                    <p style="margin-right:10px;">Category: </p>
+                                    <select class="category" id="daily_cat" name="daily_category">
+                                        <option value="Misc">Miscellaneous</option>
+                                        <option value="Food">Food</option>
+                                        <option value="Clothes">Clothes</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                    </select>
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Description: </p>
+                                    <input type="text" class="details" id="daily_desc" name="daily_desc"
+                                        style="width:30%">
+                                </div>
+
+                                <input type="submit" value="Save" class="submit-btn" style="margin-right:10px;">
+                            </form>
+                            <button class="close-btn" onclick="closeform2()">Close</button>
+                            <div class="expenses" id="daily_exp"> </div>
+                            <script>
+
+                                function openform2() {
+                                    document.getElementById("daily_data").style.display = "none";
+                                    document.getElementById("myForm2").style.display = "block";
+                                }
+
+                                function closeform2() {
+                                    document.getElementById("daily_data").style.display = "block";
+                                    document.getElementById("myForm2").style.display = "none";
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                <div class="col2">
+                    <div class="income_block">
+                        <table style="color:bisque;width:100%;">
+                            <tr>
+                                <td style="width:50%;font-size:23px"> <p style="margin:0;display:inline;float:left">Income</p></td>
+                                <td style="width:50%;text-align: right;"><p class="add-button" onclick="openform3()">+Add</p></td>
+                            </tr>
+                        </table><br>
+                        <div id="income_data" style="display:block;">
+                            {% if result_income!=[] %}
+                                {% for i in result_income %}
+                                <div style="font-size:smaller;">
+                                    <table style="color:beige;width:100%;font-size:20px;text-align: left;">
+                                        <tr>
+                                            <td style="width:30%"> &#8377;{{i[1]}}</td>
+                                            <td style="width:40%">{{i[2]}}</td>
+                                            <td style="width:30%">{{i[3]}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div></div>
+                            {% endif %}
+                        </div>
+                        <div class="entry1" id="myForm3">
+                            <form class="form-container" id="form3" method="POST" action="/income">
+                                <div style="display:flex;flex-direction: row;">
+                                    <p style="margin-right:10px;">Enter amount: </p>
+                                    <input type="text" class="details" id="inc_amt" name="inc_amount" required>
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Description: </p>
+                                    <input type="text" class="details" id="inc_desc" name="inc_desc" style="width:30%">
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Type: </p>
+                                    <select class="category" id="inc_type" name="inc_type">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="annually">Annually</option>
+                                    </select>
+                                </div>
+                                <input type="submit" value="Save" class="submit-btn" style="margin-right:10px;">
+                            </form>
+                            <button class="close-btn" onclick="closeform3()">Close</button>
+                            <script>
+                                function openform3() {
+                                    document.getElementById("income_data").style.display = "none";
+                                    document.getElementById("myForm3").style.display = "block";
+                                }
+
+                                function closeform3() {
+                                    document.getElementById("income_data").style.display = "block";
+                                    document.getElementById("myForm3").style.display = "none";
+                                }
+                            </script>
+                        </div>
+                    </div>
+                    <div class="loan_block">    
+                        <table style="color:bisque;width:100%;">
+                            <tr>
+                                <td style="width:50%;font-size:23px"> <p style="margin:0;display:inline;float:left">Loan</p></td>
+                                <td style="width:50%;text-align: right;"><p class="add-button" onclick="openform4()">+Add</p></td>
+                            </tr>
+                        </table><br>
+                        <div id="loan_data" style="display:block;">
+                            {% if result_loan!=[] %}
+                                {% for i in result_loan %}
+                                <div style="font-size:smaller;">
+                                    <table style="color:beige;width:100%;font-size:20px;text-align: left;">
+                                        <tr>
+                                            <td style="width:35%"> &#8377;{{i[1]}}</td>
+                                            <td style="width:35%">{{i[3]}}</td>
+                                            <td style="width:30%">{{i[4]}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div></div>
+                            {% endif %}
+                        </div>
+                        <div class="entry1" id="myForm4">
+                            <form class="form-container" id="form4" method="POST" action="/loan">
+                                <div style="display:flex;flex-direction: row;">
+                                    <p style="margin-right:10px;">Enter amount: </p>
+                                    <input type="text" class="details" id="loan_amt" name="loan_amount" required>
+                                </div>
+                                <div style="display:flex;flex-direction: row;">
+                                    <p style="margin-right:10px;">Interest rate: </p>
+                                    <input type="text" class="details" id="loan_rate" name="loan_rate" required>
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Type: </p>
+                                    <select class="category" id="loan_type" name="loan_type" required>
+                                        <option value="Home loan">Home loan</option>
+                                        <option value="Car loan">Car loan</option>
+                                        <option value="Education loan">Education loan</option>
+                                        <option value="Personal loan">Personal loan</option>
+                                    </select>
+                                </div>
+                                <div style="display:flex;flex-direction: row;gap:10px;">
+                                    <p>Term: </p>
+                                    <div style="display:flex;flex-direction: row;gap:px;"></div>
+                                    <input type="text" class="details" style="width:10%" id="loan_term" name="loan_term"
+                                        required>
+                                    <select class="category" style="width:30%" id="loan term" name="loan_m/y">
+                                        <option value="months">months</option>
+                                        <option value="years">years</option>
+                                    </select>
+                                </div>
+                                <input type="submit" value="Save" class="submit-btn" style="margin-right:10px;">
+                            </form>
+                            <button class="close-btn" onclick="closeform4()">Close</button>
+                            <script>
+                                function openform4() {
+                                    document.getElementById("loan_data").style.display = "none";
+                                    document.getElementById("myForm4").style.display = "block";
+                                }
+    
+                                function closeform4() {
+                                    document.getElementById("loan_data").style.display = "block";
+                                    document.getElementById("myForm4").style.display = "none";
+                                }
+                            </script>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+</body>
+
+</html>
